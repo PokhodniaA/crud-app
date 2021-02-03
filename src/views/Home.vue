@@ -4,27 +4,25 @@
       <MainButton>Add user</MainButton>
     </div>
 
-    <div class="home__table">
-      <Table :users="users" :columns="columns" :isButtons="true" />
-    </div>
+    <UsersTable :users="users" :columns="information" :isButtons="true" />
   </div>
 </template>
 
 <script>
 import defaultData from "@/assets/models/defaultUsers";
 
-import Table from "@/components/Table";
+import UsersTable from "@/components/UsersTable";
 import MainButton from "@/components/common/MainButton";
 
 export default {
   components: {
-    Table,
+    UsersTable,
     MainButton,
   },
   data() {
     return {
       users: [],
-      columns: ["name", "surname", "phone", "email"],
+      information: ["name", "surname", "phone", "email"],
     };
   },
   methods: {},
@@ -37,12 +35,6 @@ export default {
 <style lang="scss" scoped>
 .home {
   &__button {
-    display: flex;
-    justify-content: center;
-  }
-
-  &__table {
-    margin: 50px;
     display: flex;
     justify-content: center;
   }
