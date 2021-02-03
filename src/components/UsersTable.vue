@@ -13,11 +13,14 @@
       <template v-slot:tbody>
         <tr v-for="user in users" :key="user.id">
           <td v-for="key in columns" :key="key + user.name">
-            {{ key == "phone" ? `+${user[key]}` : user[key] }}
-            <!-- Отредактировать, стоит передать это через слот -->
+            {{
+              key === "name" || key === "surname"
+                ? toUpperCase(user[key])
+                : user[key]
+            }}
           </td>
           <td v-if="isButtons">
-            <TableButtons :users="users" :user="user" />
+            <TableButtons :users="users" :user="user" :columns="columns" />
           </td>
         </tr>
       </template>

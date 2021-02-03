@@ -10,25 +10,20 @@
 import EditForm from "@/components/EditForm";
 
 export default {
-  props: {
-    // user: Object,
-    // information: Array,
+  data() {
+    return {
+      user: {},
+      information: [],
+    };
   },
   components: {
     EditForm,
   },
-  data() {
-    // Временные данные
-    return {
-      user: {
-        name: "Kate",
-        surname: "Nilson",
-        phone: 380501112233,
-        email: "Kate@gmail.com",
-        id: 0,
-      },
-      information: ["name", "surname", "phone", "email"],
-    };
+
+  created() {
+    this.user = this.$route.params.user || {};
+    this.information = this.$route.params.input;
+    console.log(this.user, this.information, "editpage");
   },
 };
 </script>

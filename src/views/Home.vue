@@ -1,7 +1,9 @@
 <template>
   <div class="home">
     <div class="home__button">
-      <MainButton>Add user</MainButton>
+      <MainButton @click.native="toEditPage({ input: information })"
+        >Add user</MainButton
+      >
     </div>
 
     <UsersTable :users="users" :columns="information" :isButtons="true" />
@@ -10,6 +12,7 @@
 
 <script>
 import defaultData from "@/assets/models/defaultUsers";
+import routerMixins from "@/mixins/router";
 
 import UsersTable from "@/components/UsersTable";
 import MainButton from "@/components/common/MainButton";
@@ -19,13 +22,13 @@ export default {
     UsersTable,
     MainButton,
   },
+  mixins: [routerMixins],
   data() {
     return {
       users: [],
       information: ["name", "surname", "phone", "email"],
     };
   },
-  methods: {},
   created() {
     this.users = defaultData;
   },

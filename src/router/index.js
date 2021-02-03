@@ -14,7 +14,11 @@ const routes = [
   {
     path: "/edit",
     name: "EditPage",
-    component: EditPage
+    component: EditPage,
+    props: true,
+    beforeEnter(to, { name }, next) {
+      (name == 'Home') ? next() : next('/');
+    },
   },
 ];
 
