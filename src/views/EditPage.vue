@@ -3,11 +3,15 @@
     <div class="editPage__form">
       <EditForm :dataObject="user" :information="information" :users="users" />
     </div>
+    <div class="editPage__import">
+      <ImportJSON :users="users" />
+    </div>
   </div>
 </template>
 
 <script>
 import EditForm from "@/components/EditForm";
+import ImportJSON from "@/components/ImportJSON";
 
 export default {
   data() {
@@ -19,6 +23,7 @@ export default {
   },
   components: {
     EditForm,
+    ImportJSON,
   },
 
   created() {

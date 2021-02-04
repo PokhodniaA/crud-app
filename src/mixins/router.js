@@ -4,7 +4,7 @@ export default {
             this.$router.push({ name: "EditPage", params: params })
         },
         toMainPage() {
-            this.$router.push('/')
+            this.$router.push('/').catch(() => { }) // Avoided redundant navigation to current location
         }
     },
 }

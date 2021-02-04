@@ -7,7 +7,7 @@
       v-model="user[info]"
       :key="info"
       class="editForm__input"
-    /><!-- переделать на key=user.id -->
+    /><!-- переделать на key=user.id и можно добавить label -->
 
     <MainButton @click.native="setUser">Сохранить</MainButton>
   </form>
@@ -63,12 +63,12 @@ export default {
       } else if (filledForm && this.isNewUser) {
         this.createNewUser();
       } else {
-        alert("Fill in all the fields");
+        alert("Fill in the fields correctly");
       }
     },
     validatePhone(phone) {
-      const re = /^(s*)?(+)?([- _():=+]?d[- _():=+]?){10,14}(s*)?$/;
-      return re.test(String(phone));
+      const re = /^\+380\d{3}\d{2}\d{2}\d{2}$/;
+      return re.test(phone);
     },
     validateEmail(email) {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
