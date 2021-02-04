@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="home__button">
-      <MainButton @click.native="toEditPage({ input: information })"
+      <MainButton @click.native="toEditPage({ users, input: information })"
         >Add user</MainButton
       >
     </div>
@@ -30,7 +30,13 @@ export default {
     };
   },
   created() {
-    this.users = defaultData;
+    const localUsers = localStorage.getItem("users");
+    if (localUsers) {
+      this.users = JSON.parse(localUsers);
+    } else {
+      this.users = defaultData;
+      localStorage.setItem("users", JSON.stringify(this.users));
+    }
   },
 };
 </script>

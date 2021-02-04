@@ -1,7 +1,7 @@
 <template>
   <div class="editPage">
     <div class="editPage__form">
-      <EditForm :dataObject="user" :information="information" />
+      <EditForm :dataObject="user" :information="information" :users="users" />
     </div>
   </div>
 </template>
@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       user: {},
+      users: [],
       information: [],
     };
   },
@@ -23,7 +24,7 @@ export default {
   created() {
     this.user = this.$route.params.user || {};
     this.information = this.$route.params.input;
-    console.log(this.user, this.information, "editpage");
+    this.users = this.$route.params.users;
   },
 };
 </script>
