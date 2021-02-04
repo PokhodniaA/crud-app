@@ -1,13 +1,14 @@
 <template>
   <form class="editForm">
-    <input
-      :type="getInputType(info)"
-      :placeholder="info"
-      v-for="info in information"
-      v-model="user[info]"
-      :key="info"
-      class="editForm__input"
-    /><!-- переделать на key=user.id и можно добавить label -->
+    <div v-for="info in information" :key="info" class="editForm__field">
+      <label class="editForm__label">{{ toUpperCase(info) }}</label>
+      <input
+        :type="getInputType(info)"
+        :placeholder="info"
+        v-model="user[info]"
+        class="editForm__input"
+      /><!-- переделать на key=user.id и можно добавить label -->
+    </div>
 
     <MainButton @click.native="setUser">Сохранить</MainButton>
   </form>
@@ -81,6 +82,9 @@ export default {
       localStorage.setItem("users", JSON.stringify(this.users));
       this.toMainPage();
     },
+    toUpperCase(word) {
+      return word[0].toUpperCase() + word.slice(1);
+    }, // to mixins
   },
   created() {
     const isEmptyObject = Object.keys(this.dataObject).length;
@@ -95,7 +99,22 @@ export default {
   flex-direction: column;
   align-items: center;
 
+  &__field {
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px;
+    min-width: 50%;
+  }
+
+  &__label {
+    text-align: start;
+    padding: 5px;
+    flex: 1;
+  }
+
   &__input {
+    flex: 4; //  поправить адаптивность
+
     margin-bottom: 10px;
     min-width: 40%;
     padding: 5px;
