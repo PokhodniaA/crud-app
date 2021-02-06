@@ -1,9 +1,9 @@
 <template>
   <div class="importJSON">
-    <div class="importJSON__header">Импортировать данные из файла JSON</div>
+    <div class="importJSON__header">Import data from JSON file.</div>
 
     <form class="importJSON__form">
-      <label for="inputJSON" class="importJSON__label">Загрузить Файл</label>
+      <label for="inputJSON" class="importJSON__label">Upload</label>
       <input
         type="file"
         accept=".json"
@@ -17,12 +17,14 @@
 
 <script>
 import routerMixins from "@/mixins/router";
+import validateFormsMixins from "@/mixins/validateForms";
 
 export default {
   props: {
     users: Array,
+    information: Array,
   },
-  mixins: [routerMixins],
+  mixins: [routerMixins, validateFormsMixins],
   methods: {
     addFile(event) {
       const fileList = event.target.files || event.dataTransfer.files;
@@ -38,12 +40,40 @@ export default {
       };
     },
     addToUsers(data) {
-      data.forEach((user) => {
-        user.id = this.users[this.users.length - 1].id + 1;
-        this.users.push(user);
-        localStorage.setItem("users", JSON.stringify(this.users));
-        this.toMainPage();
-      });
+      let success;
+      if (Array.isArray(data)) {
+        success = this.validateUsers(data);
+      } else if (typeof data == "object") {
+        success = this.validateUser(data);
+      } else {
+        alert("Your file is  wrong");
+      }
+      if (success) {
+        this.showNewUsers(this.users);
+      }
+    },
+    validateUsers(data) {
+      let success = true;
+      for (let i = 0; i < data.length; i++) {
+        const user = data[i];
+        const userValid = this.validateUser(user);
+        if (!userValid) {
+          success = false;
+          break;
+        }
+      }
+      return success;
+    },
+    validateUser(user) {
+      const includesForm = this.isCorrectData(this.information, user);
+
+      if (includesForm) {
+        this.pushUser(user, this.users);
+        return true;
+      } else {
+        alert("Your user incorrect");
+        return false;
+      }
     },
   },
 };

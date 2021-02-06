@@ -4,7 +4,7 @@
       <EditForm :dataObject="user" :information="information" :users="users" />
     </div>
     <div class="editPage__import">
-      <ImportJSON :users="users" />
+      <ImportJSON :users="users" :information="information" />
     </div>
   </div>
 </template>

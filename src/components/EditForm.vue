@@ -1,13 +1,17 @@
 <template>
   <form class="editForm">
-    <div v-for="info in information" :key="info" class="editForm__field">
+    <div
+      v-for="(info, index) in information"
+      :key="index"
+      class="editForm__field"
+    >
       <label class="editForm__label">{{ toUpperCase(info) }}</label>
       <input
         :type="getInputType(info)"
         :placeholder="info"
         v-model="user[info]"
         class="editForm__input"
-      /><!-- переделать на key=user.id и можно добавить label -->
+      />
     </div>
 
     <MainButton @click.native="setUser">Сохранить</MainButton>
@@ -15,9 +19,11 @@
 </template>
 
 <script>
-import routerMixins from "@/mixins/router";
-
 import MainButton from "./common/MainButton";
+
+import routerMixins from "@/mixins/router";
+import methodsMixins from "@/mixins/additionalMethods.js";
+import validateFormsMixins from "@/mixins/validateForms";
 
 export default {
   props: {
@@ -28,7 +34,7 @@ export default {
   components: {
     MainButton,
   },
-  mixins: [routerMixins],
+  mixins: [routerMixins, methodsMixins, validateFormsMixins],
   data() {
     return {
       user: {},
@@ -47,16 +53,7 @@ export default {
       }
     },
     setUser() {
-      const filledForm = this.information.every((item) => {
-        switch (item) {
-          case "phone":
-            return this.validatePhone(this.user[item]);
-          case "email":
-            return this.validateEmail(this.user[item]);
-          default:
-            return !!this.user[item];
-        }
-      });
+      const filledForm = this.isCorrectData(this.information, this.user);
 
       if (filledForm && !this.isNewUser) {
         localStorage.setItem("users", JSON.stringify(this.users));
@@ -67,24 +64,10 @@ export default {
         alert("Fill in the fields correctly");
       }
     },
-    validatePhone(phone) {
-      const re = /^\+380\d{3}\d{2}\d{2}\d{2}$/;
-      return re.test(phone);
-    },
-    validateEmail(email) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(String(email).toLowerCase());
-    },
     createNewUser() {
-      const newID = this.users[this.users.length - 1].id + 1;
-      this.user.id = newID;
-      this.users.push(this.user);
-      localStorage.setItem("users", JSON.stringify(this.users));
-      this.toMainPage();
+      this.pushUser(this.user, this.users);
+      this.showNewUsers(this.users);
     },
-    toUpperCase(word) {
-      return word[0].toUpperCase() + word.slice(1);
-    }, // to mixins
   },
   created() {
     const isEmptyObject = Object.keys(this.dataObject).length;
@@ -131,6 +114,14 @@ export default {
       outline: none;
       border: 1px solid #ec407a;
       border-radius: 5px;
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .editForm {
+    &__field {
+      width: 90%;
     }
   }
 }

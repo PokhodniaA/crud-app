@@ -12,7 +12,7 @@
 
       <template v-slot:tbody>
         <tr v-for="user in users" :key="user.id">
-          <td v-for="key in columns" :key="key + user.name">
+          <td v-for="key in columns" :key="key + user.id" :data-label="key">
             {{
               key === "name" || key === "surname"
                 ? toUpperCase(user[key])
@@ -32,6 +32,8 @@
 import TableButtons from "./TableButtons";
 import Table from "./Table";
 
+import methodsMixins from "@/mixins/additionalMethods.js";
+
 export default {
   props: {
     users: Array,
@@ -42,14 +44,7 @@ export default {
     TableButtons,
     Table,
   },
-  data() {
-    return {};
-  },
-  methods: {
-    toUpperCase(word) {
-      return word[0].toUpperCase() + word.slice(1);
-    }, // перенести в mixin
-  },
+  mixins: [methodsMixins],
 };
 </script>
 

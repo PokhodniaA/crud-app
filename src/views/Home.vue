@@ -2,8 +2,8 @@
   <div class="home">
     <div class="home__button">
       <MainButton @click.native="toEditPage({ users, input: information })"
-        >Add user</MainButton
-      >
+        >Add user
+      </MainButton>
     </div>
 
     <UsersTable :users="users" :columns="information" :isButtons="true" />
@@ -12,6 +12,7 @@
 
 <script>
 import defaultData from "@/assets/models/defaultUsers";
+import tableInfo from "@/assets/models/tableInfo";
 import routerMixins from "@/mixins/router";
 
 import UsersTable from "@/components/UsersTable";
@@ -26,17 +27,18 @@ export default {
   data() {
     return {
       users: [],
-      information: ["name", "surname", "phone", "email"],
+      information: [],
     };
   },
   created() {
-    const localUsers = localStorage.getItem("users");
-    if (localUsers) {
-      this.users = JSON.parse(localUsers);
-    } else {
+    const setDeafultData = () => {
       this.users = defaultData;
       localStorage.setItem("users", JSON.stringify(this.users));
-    }
+    };
+
+    const localUsers = localStorage.getItem("users");
+    this.information = tableInfo;
+    localUsers ? (this.users = JSON.parse(localUsers)) : setDeafultData();
   },
 };
 </script>

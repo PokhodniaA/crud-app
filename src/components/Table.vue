@@ -48,4 +48,42 @@
     }
   }
 }
+
+@media screen and (max-width: 600px) {
+  .table {
+    width: 100%;
+
+    thead {
+      display: none;
+    }
+
+    tbody {
+      tr {
+        display: block;
+        border-bottom: 2px solid #2c3e50;
+      }
+
+      td {
+        display: block;
+        position: relative;
+        text-align: center;
+        font-size: 13px;
+        border-bottom: 1px dotted #ccc;
+        border-right: 1px solid transparent;
+
+        &:last-child {
+          border-bottom: 0;
+        }
+
+        &:before {
+          content: attr(data-label);
+          position: absolute;
+          left: 10px;
+          text-transform: uppercase;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
 </style>
