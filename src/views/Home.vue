@@ -11,12 +11,12 @@
 </template>
 
 <script>
+import UsersTable from "@/components/UsersTable";
+import MainButton from "@/components/common/MainButton";
+
 import defaultData from "@/assets/models/defaultUsers";
 import tableInfo from "@/assets/models/tableInfo";
 import routerMixins from "@/mixins/router";
-
-import UsersTable from "@/components/UsersTable";
-import MainButton from "@/components/common/MainButton";
 
 export default {
   components: {
@@ -31,14 +31,14 @@ export default {
     };
   },
   created() {
-    const setDeafultData = () => {
+    const setDefaultData = () => {
       this.users = defaultData;
       localStorage.setItem("users", JSON.stringify(this.users));
     };
 
     const localUsers = localStorage.getItem("users");
     this.information = tableInfo;
-    localUsers ? (this.users = JSON.parse(localUsers)) : setDeafultData();
+    localUsers ? (this.users = JSON.parse(localUsers)) : setDefaultData();
   },
 };
 </script>
