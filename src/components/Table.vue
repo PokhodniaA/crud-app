@@ -1,50 +1,16 @@
 <template>
   <table class="table">
     <thead>
-      <tr>
-        <th v-for="(name, index) in columns" :key="name + index">
-          {{ toUpperCase(name) }}
-        </th>
-        <th v-if="isButtons" />
-      </tr>
+      <slot name="thead"></slot>
     </thead>
 
     <tbody>
-      <tr v-for="user in users" :key="user.id">
-        <td v-for="(key, index) in columns" :key="key + index">
-          {{ key == "phone" ? `+${user[key]}` : user[key] }}
-          <!-- Отредактировать, стоит передать это через слот -->
-        </td>
-        <td v-if="isButtons">
-          <TableButtons :users="users" :user="user" />
-        </td>
-      </tr>
+      <slot name="tbody"></slot>
     </tbody>
   </table>
 </template>
 
-<script>
-import TableButtons from "./TableButtons";
 
-export default {
-  props: {
-    users: Array,
-    columns: Array,
-    isButtons: Boolean,
-  },
-  components: {
-    TableButtons,
-  },
-  data() {
-    return {};
-  },
-  methods: {
-    toUpperCase(word) {
-      return word[0].toUpperCase() + word.slice(1);
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .table {
@@ -78,6 +44,44 @@ export default {
 
       &:hover {
         background-color: #eeeeee;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .table {
+    width: 100%;
+
+    thead {
+      display: none;
+    }
+
+    tbody {
+      tr {
+        display: block;
+        border-bottom: 2px solid #2c3e50;
+      }
+
+      td {
+        display: block;
+        position: relative;
+        text-align: center;
+        font-size: 13px;
+        border-bottom: 1px dotted #ccc;
+        border-right: 1px solid transparent;
+
+        &:last-child {
+          border-bottom: 0;
+        }
+
+        &:before {
+          content: attr(data-label);
+          position: absolute;
+          left: 10px;
+          text-transform: uppercase;
+          font-weight: bold;
+        }
       }
     }
   }

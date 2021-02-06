@@ -1,35 +1,44 @@
 <template>
   <div class="home">
     <div class="home__button">
-      <MainButton>Add user</MainButton>
+      <MainButton @click.native="toEditPage({ users, input: information })"
+        >Add user
+      </MainButton>
     </div>
 
-    <div class="home__table">
-      <Table :users="users" :columns="columns" :isButtons="true" />
-    </div>
+    <UsersTable :users="users" :columns="information" :isButtons="true" />
   </div>
 </template>
 
 <script>
 import defaultData from "@/assets/models/defaultUsers";
+import tableInfo from "@/assets/models/tableInfo";
+import routerMixins from "@/mixins/router";
 
-import Table from "@/components/Table";
+import UsersTable from "@/components/UsersTable";
 import MainButton from "@/components/common/MainButton";
 
 export default {
   components: {
-    Table,
+    UsersTable,
     MainButton,
   },
+  mixins: [routerMixins],
   data() {
     return {
       users: [],
-      columns: ["name", "surname", "phone", "email"],
+      information: [],
     };
   },
-  methods: {},
   created() {
-    this.users = defaultData;
+    const setDeafultData = () => {
+      this.users = defaultData;
+      localStorage.setItem("users", JSON.stringify(this.users));
+    };
+
+    const localUsers = localStorage.getItem("users");
+    this.information = tableInfo;
+    localUsers ? (this.users = JSON.parse(localUsers)) : setDeafultData();
   },
 };
 </script>
@@ -37,12 +46,6 @@ export default {
 <style lang="scss" scoped>
 .home {
   &__button {
-    display: flex;
-    justify-content: center;
-  }
-
-  &__table {
-    margin: 50px;
     display: flex;
     justify-content: center;
   }
